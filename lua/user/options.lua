@@ -4,6 +4,9 @@ vim.opt.tabstop = 4
 vim.opt.relativenumber = true
 vim.opt.mouse = ""
 --vim.opt.ttymouse = ""
+--
+vim.opt.shell = "/bin/sh"
+
 -- general
 lvim.log.level = "info"
 lvim.format_on_save = {
@@ -40,13 +43,13 @@ lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
 -- Automatically install missing parsers when entering buffer
 lvim.builtin.treesitter.auto_install = true
 
+-- lvim.builtin.treesitter.ignore_install = { "haskell" }
+
 lvim.builtin.treesitter.ensure_installed = {
     "python",
 }
--- lvim.builtin.treesitter.ignore_install = { "haskell" }
 
-
--- -- generic LSP settings <https://www.lunarvim.org/docs/languages#lsp-support>
+-- generic LSP settings <https://www.lunarvim.org/docs/languages#lsp-support>
 
 -- --- disable automatic installation of servers
 -- lvim.lsp.installer.setup.automatic_installation = false
@@ -97,6 +100,10 @@ linters.setup {
 lvim.plugins = {
     "AckslD/swenv.nvim",
     "stevearc/dressing.nvim",
+    {
+        "christoomey/vim-tmux-navigator",
+        lazy = false,
+    },
     --     {
     --       "nvim-tree/nvim-tree.lua",
     --    },
@@ -117,6 +124,7 @@ lvim.plugins = {
 --
 --
 
+-- Pick the virual environment
 require('swenv').setup({
     post_set_venv = function()
         vim.cmd("LspRestart")

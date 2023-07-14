@@ -5,3 +5,6 @@
 
 require("user.options")
 
+if vim.g.neovide then
+    vim.o.guifont = "Iosevka Nerd Font:h13"
+end
