@@ -80,6 +80,7 @@ lvim.builtin.treesitter.ensure_installed = {
 local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
     { name = "black" },
+    { name = "clang_format" },
     --   { command = "stylua" },
     --   {
     --     command = "prettier",
@@ -89,11 +90,12 @@ formatters.setup {
 }
 local linters = require "lvim.lsp.null-ls.linters"
 linters.setup {
-    { command = "flake8", args = { "--ignore=E203" }, filetypes = { "python" } },
-    --   {
-    --     command = "shellcheck",
-    --     args = { "--severity", "warning" },
-    --   },
+    { command = "flake8",     args = { "--ignore=E203" },         filetypes = { "python" } },
+    { command = "shellcheck", args = { "--severity", "warning" }, },
+    {
+        command = "cpplint",
+        args = { "--filter=-legal/copyright" },
+    },
 }
 
 -- -- Additional Plugins <https://www.lunarvim.org/docs/plugins#user-plugins>
