@@ -47,6 +47,7 @@ lvim.builtin.treesitter.auto_install = true
 
 lvim.builtin.treesitter.ensure_installed = {
     "python",
+    "latex",
 }
 
 -- generic LSP settings <https://www.lunarvim.org/docs/languages#lsp-support>
@@ -115,13 +116,41 @@ lvim.plugins = {
             })
         end
     },
-    --     {
+    -- Vimtex
+    -- https://github.com/lervag/vimtex/issues/2698#issuecomment-1531011148
+    -- https://github.com/LunarVim/LunarVim/issues/3723#issuecomment-1533041636
+    {
+        "lervag/vimtex",
+        ft = 'tex',
+        lazy = false,
+        config = function()
+            vim.g.tex_flavor = 'latex'
+            vim.g.conceallevel = 1
+            vim.g.vimtex_quickfix_mode = 0
+            vim.g.tex_conceal = 'abdmg'
+        end
+    },
+    {
+        "iurimateus/luasnip-latex-snippets.nvim",
+        dependencies = {
+            "L3MON4D3/LuaSnip",
+            "lervag/vimtex"
+        },
+        config = function()
+            -- require 'luasnip-latex-snippets'.setup()
+            require 'luasnip-latex-snippets'.setup(
+                { use_treesitter = true })
+            require("luasnip").config.setup { enable_autosnippets = true }
+        end,
+    },
+    -- "sirver/ultisnips",
+    --    {
     --       "nvim-tree/nvim-tree.lua",
     --    },
-    --     {
+    --    {
     --       "folke/trouble.nvim",
     --       cmd = "TroubleToggle",
-    --     },
+    --    },
 }
 
 -- -- Autocommands (`:help autocmd`) <https://neovim.io/doc/user/autocmd.html>
@@ -146,3 +175,17 @@ lvim.builtin.which_key.mappings["C"] = {
     name = "Python",
     c = { "<cmd>lua require('swenv.api').pick_venv()<cr>", "Choose Env" },
 }
+
+vim.opt.wrap = true
+
+-- require("vimtex").setup()
+
+--{
+-- tex_flavor = 'latex',
+-- vimtex_quickfix_mode = 0,
+-- conceallevel = 1,
+-- tex_conceal = 'abdmg',
+--}
+
+
+-- vim.api.nvim_set_var('tex_flavor', "latex")
