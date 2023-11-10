@@ -3,8 +3,16 @@
 -- Forum: https://www.reddit.com/r/lunarvim/
 -- Discord: https://discord.com/invite/Xb9B4Ny
 
-require("user.options")
+local uname = vim.loop.os_uname()
 
-if vim.g.neovide then
-    vim.o.guifont = "Iosevka Nerd Font:h13"
+_G.OS = uname.sysname
+_G.IS_MAC = OS == 'Darwin'
+_G.IS_LINUX = OS == 'Linux'
+_G.IS_WINDOWS = OS:find 'Windows' and true or false
+_G.IS_WSL = IS_LINUX and uname.release:find 'Microsoft' and true or false
+
+if _G.IS_WINDOWS then
+    require("user.winoptions")
+else
+    require("user.options")
 end

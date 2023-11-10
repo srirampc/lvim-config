@@ -191,3 +191,8 @@ vim.opt.wrap = true
 
 
 -- vim.api.nvim_set_var('tex_flavor', "latex")
+--
+
+if vim.g.neovide then
+    vim.o.guifont = "Iosevka Nerd Font:h13"
+end
