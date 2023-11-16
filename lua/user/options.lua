@@ -21,7 +21,6 @@ lvim.format_on_save = {
 lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
-
 lvim.keys.normal_mode["<S-Right>"] = ":BufferLineCycleNext<CR>"
 lvim.keys.normal_mode["<S-Left>"] = ":BufferLineCyclePrev<CR>"
 lvim.keys.normal_mode["<Right>"] = ":BufferLineCycleNext<CR>"
@@ -29,12 +28,54 @@ lvim.keys.normal_mode["<Left>"] = ":BufferLineCyclePrev<CR>"
 
 -- -- Use which-key to add extra bindings with the leader-key prefix
 -- lvim.builtin.which_key.mappings["W"] = { "<cmd>noautocmd w<cr>", "Save without formatting" }
--- lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
-lvim.builtin.which_key.mappings["C"] = {
-    name = "Python",
-    c = { "<cmd>lua require('swenv.api').pick_venv()<cr>", "Choose Env" },
+lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
+lvim.builtin.which_key.mappings["E"] = {
+    name = "Environment",
+    p = { "<cmd>lua require('swenv.api').pick_venv()<cr>", "Choose Python Env" },
+}
+-- iREPL Mappings
+lvim.builtin.which_key.mappings["i"] = {
+    name = "IronRepl",
+    p = { ":IronRepl<CR>", "iREPL" },
+    r = { ":IronRestart<CR>", "iREPL Restart" },
+    f = { ":IronFocus<CR>", "iREPL Focus" },
+    h = { ":IronHide<CR>", "iREPL Hide" },
+    -- exit
+    q = { "<cmd>lua require('iron.core').close_repl()<cr>", "iREPL quit" },
+    -- clear
+    c = { "<cmd>lua require('iron.core').send(nil, string.char(12))<cr>", "iREPL clear" },
+    -- interrupt
+    ["<space>"] = {
+        "<cmd>lua require('iron.core').send(nil, string.char(03))<cr>", "iREPL interrupt"
+    }
+}
+lvim.builtin.which_key.mappings["i"]["s"] = {
+    name = "Send to iREPL",
+    f = { "<cmd>lua require('iron.core').send_file()<cr>", "File" },
+    l = { "<cmd>lua require('iron.core').send_line()<cr>", "Line" },
+    u = { "<cmd>lua require('iron.core').send_until_cursor()<cr>", "Until cursor" },
+    r = { "<cmd>lua require('iron.core').send_mark()<cr>", "Mark" },
+    -- send_motion
+    c = { "<cmd>lua require('iron.core').run_motion('send_motion')<cr>", "Motion" },
+}
+lvim.builtin.which_key.mappings["i"]["m"] = {
+    name = "Marks <-> iREPL",
+    -- mark_motion
+    c = { "<cmd>lua require('iron.core').run_motion('mark_motion')<cr>", "Motion" },
+    -- remove_mark = "<leader>imd",
+    d = { "<cmd>lua require('iron.marks').drop_last()<cr>", "Remove" },
 }
 
+-- keymaps = {
+--     visual_send = "<leader>isc",
+--     mark_visual = "<leader>imc",
+-- },
+-- iREPL Mappings
+lvim.builtin.which_key.vmappings["i"] = {
+    name = "IronRepl",
+    s = { "<cmd>lua require('iron.core').visual_send()<cr>", "Send Selection" },
+    m = { "<cmd>lua require('iron.core').mark_visual()<cr>", "Mark Selection" },
+}
 
 -- -- Change theme settings
 -- lvim.colorscheme = "lunar"
@@ -144,6 +185,37 @@ lvim.plugins = {
             })
         end
     },
+    -- iron.nvim
+    {
+        "Vigemus/iron.nvim",
+        lazy = false,
+        config = function()
+            require("iron.core").setup({
+                config = {
+                    -- Whether a repl should be discarded or not
+                    scratch_repl = true,
+                    -- Your repl definitions come here
+                    repl_definition = {
+                        sh = {
+                            -- Can be a table or a function that
+                            -- returns a table (see below)
+                            command = { "bash" }
+                        }
+                    },
+                    -- How the repl window will be displayed
+                    -- See below for more information
+                    repl_open_cmd = require('iron.view').split.vertical.botright(0.4),
+                },
+                -- If the highlight is on, you can change how it looks
+                -- For the available options, check nvim_set_hl
+                highlight = {
+                    italic = true
+                },
+                ignore_blank_lines = true, -- ignore blank lines when sending visual select lines
+            })
+        end
+    },
+
     -- Vimtex
     -- https://github.com/lervag/vimtex/issues/2698#issuecomment-1531011148
     -- https://github.com/LunarVim/LunarVim/issues/3723#issuecomment-1533041636
