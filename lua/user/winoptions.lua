@@ -10,14 +10,14 @@ vim.cmd [[
 
 -- Set a compatible clipboard manager
 vim.g.clipboard = {
-  copy = {
-    ["+"] = "win32yank.exe -i --crlf",
-    ["*"] = "win32yank.exe -i --crlf",
-  },
-  paste = {
-    ["+"] = "win32yank.exe -o --lf",
-    ["*"] = "win32yank.exe -o --lf",
-  },
+    copy = {
+        ["+"] = "win32yank.exe -i --crlf",
+        ["*"] = "win32yank.exe -i --crlf",
+    },
+    paste = {
+        ["+"] = "win32yank.exe -o --lf",
+        ["*"] = "win32yank.exe -o --lf",
+    },
 }
 
 -- vim options
@@ -28,9 +28,9 @@ vim.opt.relativenumber = true
 -- general
 lvim.log.level = "info"
 lvim.format_on_save = {
-  enabled = true,
-  pattern = "*.lua",
-  timeout = 1000,
+    enabled = true,
+    pattern = "*.lua",
+    timeout = 1000,
 }
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
@@ -39,9 +39,10 @@ lvim.format_on_save = {
 lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
-
 lvim.keys.normal_mode["<S-Right>"] = ":BufferLineCycleNext<CR>"
 lvim.keys.normal_mode["<S-Left>"] = ":BufferLineCyclePrev<CR>"
+lvim.keys.normal_mode["<Right>"] = ":BufferLineCycleNext<CR>"
+lvim.keys.normal_mode["<Left>"] = ":BufferLineCyclePrev<CR>"
 
 -- -- Use which-key to add extra bindings with the leader-key prefix
 -- lvim.builtin.which_key.mappings["W"] = { "<cmd>noautocmd w<cr>", "Save without formatting" }
@@ -127,5 +128,5 @@ lvim.builtin.treesitter.auto_install = true
 --
 
 if vim.g.neovide then
-  vim.o.guifont = "Iosevka Nerd Font:h12"
+    vim.o.guifont = "Iosevka Nerd Font:h12"
 end

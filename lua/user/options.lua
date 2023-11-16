@@ -30,6 +30,11 @@ lvim.keys.normal_mode["<Left>"] = ":BufferLineCyclePrev<CR>"
 -- -- Use which-key to add extra bindings with the leader-key prefix
 -- lvim.builtin.which_key.mappings["W"] = { "<cmd>noautocmd w<cr>", "Save without formatting" }
 -- lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
+lvim.builtin.which_key.mappings["C"] = {
+    name = "Python",
+    c = { "<cmd>lua require('swenv.api').pick_venv()<cr>", "Choose Env" },
+}
+
 
 -- -- Change theme settings
 -- lvim.colorscheme = "lunar"
@@ -57,9 +62,19 @@ lvim.builtin.treesitter.ensure_installed = {
 
 -- ---configure a server manually. IMPORTANT: Requires `:LvimCacheReset` to take effect
 -- ---see the full default list `:lua =lvim.lsp.automatic_configuration.skipped_servers`
--- vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "pyright" })
+vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "clangd" })
+
+-- Setting options for LSP Servers
 -- local opts = {} -- check the lspconfig documentation for a list of all possible options
 -- require("lvim.lsp.manager").setup("pyright", opts)
+--
+-- For clangd
+-- https://github.com/LunarVim/LunarVim/issues/2597#issuecomment-1254764973
+local capabilities = require("lvim.lsp").common_capabilities()
+capabilities.offsetEncoding = { "utf-16" }
+local opts = { capabilities = capabilities }
+require("lvim.lsp.manager").setup("clangd", opts)
+
 
 -- ---remove a server from the skipped list, e.g. eslint, or emmet_ls. IMPORTANT: Requires `:LvimCacheReset` to take effect
 -- ---`:LvimInfo` lists which server(s) are skipped for the current filetype
@@ -76,6 +91,7 @@ lvim.builtin.treesitter.ensure_installed = {
 --   --Enable completion triggered by <c-x><c-o>
 --   buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
 -- end
+--
 
 -- -- linters and formatters <https://www.lunarvim.org/docs/languages#lintingformatting>
 local formatters = require "lvim.lsp.null-ls.formatters"
@@ -101,7 +117,17 @@ linters.setup {
 
 -- -- Additional Plugins <https://www.lunarvim.org/docs/plugins#user-plugins>
 lvim.plugins = {
-    "AckslD/swenv.nvim",
+    {
+        "AckslD/swenv.nvim",
+        config = function()
+            -- Pick the virual environment
+            require('swenv').setup({
+                post_set_venv = function()
+                    vim.cmd("LspRestart")
+                end,
+            })
+        end
+    },
     "stevearc/dressing.nvim",
     {
         "christoomey/vim-tmux-navigator",
@@ -140,19 +166,22 @@ lvim.plugins = {
         },
         config = function()
             -- require 'luasnip-latex-snippets'.setup()
-            require 'luasnip-latex-snippets'.setup(
-                { use_treesitter = true })
-            require("luasnip").config.setup { enable_autosnippets = true }
+            require('luasnip-latex-snippets').setup({
+                use_treesitter = true
+            })
+            require("luasnip").config.setup({
+                enable_autosnippets = true
+            })
         end,
     },
     -- "sirver/ultisnips",
     --    {
     --       "nvim-tree/nvim-tree.lua",
     --    },
-    --    {
-    --       "folke/trouble.nvim",
-    --       cmd = "TroubleToggle",
-    --    },
+    {
+        "folke/trouble.nvim",
+        cmd = "TroubleToggle",
+    },
 }
 
 -- -- Autocommands (`:help autocmd`) <https://neovim.io/doc/user/autocmd.html>
@@ -166,32 +195,7 @@ lvim.plugins = {
 --
 --
 
--- Pick the virual environment
-require('swenv').setup({
-    post_set_venv = function()
-        vim.cmd("LspRestart")
-    end,
-})
-
-lvim.builtin.which_key.mappings["C"] = {
-    name = "Python",
-    c = { "<cmd>lua require('swenv.api').pick_venv()<cr>", "Choose Env" },
-}
-
 vim.opt.wrap = true
-
--- require("vimtex").setup()
-
---{
--- tex_flavor = 'latex',
--- vimtex_quickfix_mode = 0,
--- conceallevel = 1,
--- tex_conceal = 'abdmg',
---}
-
-
--- vim.api.nvim_set_var('tex_flavor', "latex")
---
 
 if vim.g.neovide then
     vim.o.guifont = "Iosevka Nerd Font:h13"
