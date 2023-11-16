@@ -1,3 +1,8 @@
+-- vim options
+vim.opt.shiftwidth = 4
+vim.opt.tabstop = 4
+vim.opt.relativenumber = true
+
 -- Enable powershell as your default shell
 vim.opt.shell = "pwsh.exe -NoLogo"
 vim.opt.shellcmdflag =
@@ -20,11 +25,6 @@ vim.g.clipboard = {
     },
 }
 
--- vim options
-vim.opt.shiftwidth = 2
-vim.opt.tabstop = 2
-vim.opt.relativenumber = true
-
 -- general
 lvim.log.level = "info"
 lvim.format_on_save = {
@@ -46,7 +46,7 @@ lvim.keys.normal_mode["<Left>"] = ":BufferLineCyclePrev<CR>"
 
 -- -- Use which-key to add extra bindings with the leader-key prefix
 -- lvim.builtin.which_key.mappings["W"] = { "<cmd>noautocmd w<cr>", "Save without formatting" }
--- lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
+lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
 
 -- -- Change theme settings
 lvim.colorscheme = "lunar"
@@ -109,12 +109,23 @@ lvim.builtin.treesitter.auto_install = true
 -- }
 
 -- -- Additional Plugins <https://www.lunarvim.org/docs/plugins#user-plugins>
--- lvim.plugins = {
---     {
---       "folke/trouble.nvim",
---       cmd = "TroubleToggle",
---     },
--- }
+lvim.plugins = {
+    --     {
+    --       "folke/trouble.nvim",
+    --       cmd = "TroubleToggle",
+    --     },
+    {
+        "kylechui/nvim-surround",
+
+        version = "*", -- Use for stability; omit to use `main` branch for the latest features
+        event = "VeryLazy",
+        config = function()
+            require("nvim-surround").setup({
+                -- Configuration here, or leave empty to use defaults
+            })
+        end
+    },
+}
 
 -- -- Autocommands (`:help autocmd`) <https://neovim.io/doc/user/autocmd.html>
 -- vim.api.nvim_create_autocmd("FileType", {
@@ -127,6 +138,7 @@ lvim.builtin.treesitter.auto_install = true
 --
 --
 
+vim.opt.wrap = true
 if vim.g.neovide then
     vim.o.guifont = "Iosevka Nerd Font:h12"
 end
