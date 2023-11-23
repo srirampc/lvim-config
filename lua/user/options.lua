@@ -66,15 +66,27 @@ lvim.builtin.which_key.mappings["i"]["m"] = {
     d = { "<cmd>lua require('iron.marks').drop_last()<cr>", "Remove" },
 }
 
--- keymaps = {
---     visual_send = "<leader>isc",
---     mark_visual = "<leader>imc",
--- },
--- iREPL Mappings
 lvim.builtin.which_key.vmappings["i"] = {
     name = "IronRepl",
     s = { "<cmd>lua require('iron.core').visual_send()<cr>", "Send Selection" },
     m = { "<cmd>lua require('iron.core').mark_visual()<cr>", "Mark Selection" },
+}
+
+lvim.builtin.which_key.mappings["m"] = {
+    name = "Harpoon",
+    m = { ":lua require('harpoon.mark').add_file()<cr>", "Mark file" },
+    t = { ":lua require('harpoon.ui').toggle_quick_menu()<cr>", "Toggle UI" },
+    a = { ":lua require('harpoon.ui').nav_file(1)<cr>", "Goto mark 1" },
+    s = { ":lua require('harpoon.ui').nav_file(2)<cr>", "Goto mark 2" },
+    d = { ":lua require('harpoon.ui').nav_file(3)<cr>", "Goto mark 3" },
+    f = { ":lua require('harpoon.ui').nav_file(4)<cr>", "Goto mark 4" },
+    g = { ":lua require('harpoon.ui').nav_file(5)<cr>", "Goto mark 5" },
+    q = { ":lua require('harpoon.ui').nav_file(6)<cr>", "Goto mark 6" },
+    w = { ":lua require('harpoon.ui').nav_file(7)<cr>", "Goto mark 7" },
+    e = { ":lua require('harpoon.ui').nav_file(8)<cr>", "Goto mark 8" },
+    r = { ":lua require('harpoon.ui').nav_file(9)<cr>", "Goto mark 9" },
+    n = { ":lua require('harpoon.ui').nav_next()<cr>", "Next file" },
+    p = { ":lua require('harpoon.ui').nav_prev()<cr>", "Prev file" },
 }
 
 -- -- Change theme settings
@@ -250,10 +262,12 @@ lvim.plugins = {
     --    {
     --       "nvim-tree/nvim-tree.lua",
     --    },
-    {
-        "folke/trouble.nvim",
-        cmd = "TroubleToggle",
-    },
+    -- {
+    --     "folke/trouble.nvim",
+    --     dependencies = { "nvim-tree/nvim-web-devicons" },
+    --     cmd = "TroubleToggle",
+    -- },
+    { "ThePrimeagen/harpoon" },
 }
 
 -- -- Autocommands (`:help autocmd`) <https://neovim.io/doc/user/autocmd.html>
