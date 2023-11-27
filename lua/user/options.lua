@@ -28,11 +28,13 @@ lvim.keys.normal_mode["<Left>"] = ":BufferLineCyclePrev<CR>"
 
 -- -- Use which-key to add extra bindings with the leader-key prefix
 -- lvim.builtin.which_key.mappings["W"] = { "<cmd>noautocmd w<cr>", "Save without formatting" }
-lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
+lvim.builtin.which_key.mappings["a"] = { ":Alpha<cr>", " Dashboard" }
+
 lvim.builtin.which_key.mappings["E"] = {
     name = "Environment",
     p = { "<cmd>lua require('swenv.api').pick_venv()<cr>", "Choose Python Env" },
 }
+
 -- iREPL Mappings
 lvim.builtin.which_key.mappings["i"] = {
     name = "IronRepl",
@@ -65,13 +67,12 @@ lvim.builtin.which_key.mappings["i"]["m"] = {
     -- remove_mark = "<leader>imd",
     d = { "<cmd>lua require('iron.marks').drop_last()<cr>", "Remove" },
 }
-
 lvim.builtin.which_key.vmappings["i"] = {
     name = "IronRepl",
     s = { "<cmd>lua require('iron.core').visual_send()<cr>", "Send Selection" },
     m = { "<cmd>lua require('iron.core').mark_visual()<cr>", "Mark Selection" },
 }
-
+-- Harpoon which keys
 lvim.builtin.which_key.mappings["m"] = {
     name = "Harpoon",
     m = { ":lua require('harpoon.mark').add_file()<cr>", "Mark file" },
@@ -88,24 +89,50 @@ lvim.builtin.which_key.mappings["m"] = {
     n = { ":lua require('harpoon.ui').nav_next()<cr>", "Next file" },
     p = { ":lua require('harpoon.ui').nav_prev()<cr>", "Prev file" },
 }
-
+-- Persistence sessions
+lvim.builtin.which_key.mappings["S"] = {
+    name = " persistence.nvim",
+    s = { "<cmd>lua require('persistence').load()<cr>", " Reload last session for dir" },
+    l = { "<cmd>lua require('persistence').load({ last = true })<cr>", " Restore last session" },
+    Q = { "<cmd>lua require('persistence').stop()<cr>", " Quit without saving session" },
+}
+-- Telescope
+lvim.builtin.which_key.mappings["t"] = {
+    name = "Telescope",
+    p = { "<cmd>Telescope projects<CR>", "Projects" },
+    r = { ':Telescope resume<cr>', 'Resume' },
+    f = { ':Telescope frecency<cr>', 'Frecency' },
+}
 -- -- Change theme settings
 -- lvim.colorscheme = "lunar"
 
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.terminal.active = true
+-- Treesitter configuration
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
 
 -- Automatically install missing parsers when entering buffer
 lvim.builtin.treesitter.auto_install = true
-
--- lvim.builtin.treesitter.ignore_install = { "haskell" }
-
+lvim.builtin.treesitter.ignore_install = { "haskell" }
 lvim.builtin.treesitter.ensure_installed = {
     "python",
     "latex",
+    "c",
+    "cpp",
+    "python",
+}
+
+-- Project Settings
+lvim.builtin.project.detection_methods = { "lsp", "pattern" }
+lvim.builtin.project.patterns = {
+    ".git",
+    "package-lock.json",
+    "yarn.lock",
+    "package.json",
+    "requirements.txt",
+    "CMakeLists.txt",
 }
 
 -- generic LSP settings <https://www.lunarvim.org/docs/languages#lsp-support>
@@ -170,6 +197,7 @@ linters.setup {
 
 -- -- Additional Plugins <https://www.lunarvim.org/docs/plugins#user-plugins>
 lvim.plugins = {
+    -- Python virtual environment
     {
         "AckslD/swenv.nvim",
         config = function()
@@ -182,13 +210,14 @@ lvim.plugins = {
         end
     },
     "stevearc/dressing.nvim",
+    -- Vim tmux : TODO: update
     {
         "christoomey/vim-tmux-navigator",
         lazy = false,
     },
+    -- Surround with braces
     {
         "kylechui/nvim-surround",
-
         version = "*", -- Use for stability; omit to use `main` branch for the latest features
         event = "VeryLazy",
         config = function()
@@ -197,7 +226,7 @@ lvim.plugins = {
             })
         end
     },
-    -- iron.nvim
+    -- REPL using iron.nvim
     {
         "Vigemus/iron.nvim",
         lazy = false,
@@ -227,7 +256,6 @@ lvim.plugins = {
             })
         end
     },
-
     -- Vimtex
     -- https://github.com/lervag/vimtex/issues/2698#issuecomment-1531011148
     -- https://github.com/LunarVim/LunarVim/issues/3723#issuecomment-1533041636
@@ -242,6 +270,7 @@ lvim.plugins = {
             vim.g.tex_conceal = 'abdmg'
         end
     },
+    -- latex snippets for math and other
     {
         "iurimateus/luasnip-latex-snippets.nvim",
         dependencies = {
@@ -267,7 +296,28 @@ lvim.plugins = {
     --     dependencies = { "nvim-tree/nvim-web-devicons" },
     --     cmd = "TroubleToggle",
     -- },
+    -- Persistent Sessions
+    {
+        "folke/persistence.nvim",
+        event = "BufReadPre",
+        config = function()
+            require("persistence").setup({
+                dir = vim.fn.expand(vim.fn.stdpath "state" .. "/sessions/"),
+                options = { "buffers", "curdir", "tabpages", "winsize" }
+            })
+        end
+    },
+    -- Harpoon for going back and forth
     { "ThePrimeagen/harpoon" },
+    -- Telescope frequency
+    {
+        'nvim-telescope/telescope-frecency.nvim',
+        dependencies = { 'nvim-telescope/telescope.nvim',
+            'kkharji/sqlite.lua' },
+        config = function()
+            require("telescope").load_extension "frecency"
+        end,
+    },
 }
 
 -- -- Autocommands (`:help autocmd`) <https://neovim.io/doc/user/autocmd.html>
