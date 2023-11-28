@@ -1,11 +1,31 @@
 # lvim-config
 My configruation for lunarvim
 
-# Python Plugin Install
+# Mason Plugins Install
 
-Install `black` and `flake8` for formatting and linting python code respectively.
+Install Mason LSP plugins with `:MasonInstall`.
 
+For C/C++:
 ```
-:MasonInstall black
-:MasonInstall flake8
+    ◍ cmake-language-server cmake
+    ◍ clang-format 
+    ◍ clangd 
+    ◍ cpplint
+```
+
+For Python:
+```
+    ◍ black
+    ◍ pyright 
+    ◍ flake8 
+```
+
+Others:
+```
+    ◍ r-languageserver
+    ◍ lua-language-server
+    ◍ bash-language-server
+    ◍ json-lsp
+    ◍ texlab 
+    ◍ yaml-language-server
 ```
