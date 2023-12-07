@@ -4,6 +4,7 @@
 vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
 vim.opt.relativenumber = true
+vim.opt.colorcolumn = "80"
 vim.opt.mouse = ""
 --vim.opt.ttymouse = ""
 --
@@ -20,8 +21,8 @@ lvim.format_on_save = {
 }
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
--- -- Change theme settings
--- lvim.colorscheme = "lunar"
+-- Theme settings
+lvim.colorscheme = "catppuccin-mocha"
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.terminal.active = true
@@ -101,7 +102,7 @@ lvim.builtin.which_key.mappings["m"] = {
 }
 -- Persistence sessions
 lvim.builtin.which_key.mappings["S"] = {
-    name = " persistence.nvim",
+    name = "persistence.nvim",
     s = { "<cmd>lua require('persistence').load()<cr>", " Reload last session for dir" },
     l = { "<cmd>lua require('persistence').load({ last = true })<cr>", " Restore last session" },
     Q = { "<cmd>lua require('persistence').stop()<cr>", " Quit without saving session" },
@@ -311,6 +312,13 @@ lvim.plugins = {
         lazy = false,
     },
     --++++++++++++++++++++++++--
+    --+*****    Themes   ****+--
+    --++++++++++++++++++++++++--
+    {
+        "catppuccin/nvim",
+        name = "catppuccin",
+        priority = 1000
+    },
     --+***** C++ Plugins ****+--
     --++++++++++++++++++++++++--
     {

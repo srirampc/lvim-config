@@ -4,6 +4,7 @@
 vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
 vim.opt.relativenumber = true
+vim.opt.colorcolumn = "80"
 -- Enable powershell as your default shell
 vim.opt.shell = "pwsh.exe -NoLogo"
 vim.opt.shellcmdflag =
@@ -36,8 +37,9 @@ lvim.format_on_save = {
 }
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
--- Change theme settings
-lvim.colorscheme = "lunar"
+-- Theme settings
+-- lvim.colorscheme = "lunar"
+lvim.colorscheme = "catppuccin-mocha"
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.terminal.active = true
@@ -57,7 +59,7 @@ lvim.keys.normal_mode["<Left>"] = ":BufferLineCyclePrev<CR>"
 
 -- -- Use which-key to add extra bindings with the leader-key prefix
 -- lvim.builtin.which_key.mappings["W"] = { "<cmd>noautocmd w<cr>", "Save without formatting" }
-lvim.builtin.which_key.mappings["a"] = { ":Alpha<cr>", " Dashboard" }
+lvim.builtin.which_key.mappings["a"] = { ":Alpha<cr>", "Dashboard" }
 lvim.builtin.which_key.mappings[";"] = {}
 -- Harpoon which keys
 lvim.builtin.which_key.mappings["m"] = {
@@ -78,7 +80,7 @@ lvim.builtin.which_key.mappings["m"] = {
 }
 -- Persistence sessions
 lvim.builtin.which_key.mappings["S"] = {
-    name = " persistence.nvim",
+    name = "persistence.nvim",
     s = { "<cmd>lua require('persistence').load()<cr>", " Reload last session for dir" },
     l = { "<cmd>lua require('persistence').load({ last = true })<cr>", " Restore last session" },
     Q = { "<cmd>lua require('persistence').stop()<cr>", " Quit without saving session" },
@@ -206,6 +208,14 @@ lvim.plugins = {
     },
     -- Harpoon for going back and forth
     { "ThePrimeagen/harpoon" },
+    --++++++++++++++++++++++++--
+    --+*****    Themes   ****+--
+    --++++++++++++++++++++++++--
+    {
+        "catppuccin/nvim",
+        name = "catppuccin",
+        priority = 1000
+    },
 }
 
 -- -- Autocommands (`:help autocmd`) <https://neovim.io/doc/user/autocmd.html>
