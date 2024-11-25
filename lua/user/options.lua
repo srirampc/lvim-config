@@ -393,7 +393,8 @@ lvim.plugins = {
         config = function()
             -- require 'luasnip-latex-snippets'.setup()
             require('luasnip-latex-snippets').setup({
-                use_treesitter = true
+                use_treesitter = true,
+                allow_on_markdown = false, -- Disable as it throws ERROR in markdown
             })
             require("luasnip").config.setup({
                 enable_autosnippets = true
