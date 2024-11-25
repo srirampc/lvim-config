@@ -189,6 +189,11 @@ lvim.plugins = {
             })
         end
     },
+    {
+        'kaarmu/typst.vim',
+        ft = 'typst',
+        lazy = false,
+    },
     -- "sirver/ultisnips",
     -- {
     --     "folke/trouble.nvim",
